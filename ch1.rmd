@@ -1,0 +1,99 @@
+
+# Chapter 1
+
+## Questions
+
+1. What are the properties of a vector other than its contents?
+  - Three common properties
+    - type `typeof()`   
+    - length `length()`
+    - attributes `attributes()`
+
+2. What are the four common types of atomic vectors? What are the two rare types?
+  - logical, double, character, integer (same as double with no decimal point)
+   - complex, raw
+
+3. What are attributes and how to you get and set them?
+
+4. How is a list different from an atomic vector? How is a matrix different from a Data Frame?
+
+5. Can you have a list that is a matrix? Can a Data Frame have a column that is a matrix?
+
+
+
+### Q1 - what are the properties of a vector other than its contents?
+
+The basic Data structure in R is a vector - they come in **Atomic Vectors** and **Lists**.
+
+
+```{r}
+typeof() ## what it is
+
+length() ## How many elements it contains
+
+attributes() ## additional arbitrary metadata
+```
+
+#### Atomic Vectors
+
+[Vector Explaination](https://renenyffenegger.ch/notes/development/languages/R/data-structures/vector/)
+
+##### Four kinds
+- logical (true/ false)
+- integer (numbers without decimals)
+- double (numbers with decimals)
+- character (strings/ words)
+```{r}
+dbl_var <- c(1,1.5,2.5) 
+
+int_var <- c(1L, 2.5L, 5L) ## with the L suffic there is ain integer rather than a double
+
+log_var <- c(TRUE, FALSE, TRUE, T, F)
+
+chr_var <- c("these are some words", "these are some other words", "strings are 'words'.")
+
+```
+
+- Notes
+  - Atomic vectors are always flat, even if you nest `c()`'s e.g `c(1,c(1,3.4))` is the same as `c(1,2,3.4)`
+  - Missing values are replaced with `NA` which is a logical vector of '1'.
+
+##### Types and Tests
+
+```{r}
+typeof(dbl_var)
+```
+
+```{r}
+is.atomic(log_var)
+```
+```{r}
+is.double(dbl_var)
+```
+```{r}
+is_numeric(dbl_var) ## from purrr doing the same as is.numeric but is deprecated
+is.numeric(dbl_var)
+```
+##### Coercion
+
+All elements of a vector must be of the same type. If they aren't then they will be coerced into the most flexible type. 
+```{r}
+str(c(1,"a")) ## integers and strings combine to form 'character' vectors
+```
+ When a logical vector is coerced to integer or double, `TRUE = 1` and `FALSE = 0`. Often used in conjunction with `sum()` and `mean()`. 
+```{r}
+x <- c(TRUE, FALSE, TRUE, FALSE, FALSE, TRUE)
+typeof(x)
+sum(x) ## total number of 'TRUE's
+as.numeric(x)
+mean(x) ## Proportion that are 'TRUE'
+```
+ If there is any chance of confusion specifically coerce a vector to another type with
+ - `as.logical`
+ - `as.integer`
+ - `as.character`
+ - `as.double`
+ 
+ --- 
+#### Lists 
+
