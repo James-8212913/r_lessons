@@ -96,4 +96,19 @@ mean(x) ## Proportion that are 'TRUE'
  
  --- 
 #### Lists 
+Lists are different to vectors because the elements in them can be of any type. 
+
+```{r}
+y <- list(1:3, "a", c(TRUE, F, T, F,F,T,T), c(2,3,4,5,6))
+str(y)
+```
+
+List can be called *recursive* vectors becuase a list can contain other lists - this is the fundamental difference between lists and vectors.
+
+```{r}
+z <- list(list(list(list(1:5))))
+str(z)
+```
+
+`c()` will combine several lists into one. if given a combination of atomic vectors `c()` will coerce the lists to vector before combining them. 
 
