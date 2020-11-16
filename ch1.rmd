@@ -139,7 +139,29 @@ Some common attributes are in the table below:
 
 - class     - the class of the object
 - comment   - a comment on the object, often a description of what it means
-- 
+- dim       - dimensions of the object
+- dimnames  - names associated with each dimension of the object
+- names     - names attribute of the object
+- row.names - the name of each row of an object
+- col.names - the name of each column of an object
+- tsp       - the start time for an object
+- levels    - levels of a factor
+
+You can get a list of all the attributes of ran object by `attributes()`.
+
+The `structure()` will return the structure of the object. Remember, attributes 
+
+```{r}
+attr(a, "my_attribute") <- "This is a list" ## insert a comment on a list - set an attribute 
+
+attributes(a) ## inspect the attributes of the list
+str(attributes(a)) ## get the attributes for the list, only the single one for the list. Note it returns a list itself of the attributes.
+
+structure(b) ## returns the structure for the object
+
+```
+
+
 
 
 
