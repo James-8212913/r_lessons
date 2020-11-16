@@ -96,16 +96,19 @@ mean(x) ## Proportion that are 'TRUE'
  
  --- 
 #### Lists 
-Lists are different to vectors because the elements in them can be of any type. 
+Lists are different to vectors because the elements in them can be of any type. List can contain any varialbe type, vectors, matrices, functions and even lists themselves. 
 
 Some useful information on lists is at this [link](https://www.datamentor.io/r-programming/list/). 
+
+lists don't have dimensions - this means that `dim()` will return a NULL (as below).
 
 ```{r}
 y <- list(1:3, "a", c(TRUE, F, T, F,F,T,T), c(2,3,4,5,6))
 str(y)
+dim(y)
 ```
 
-List can be called *recursive* vectors becuase a list can contain other lists - this is the fundamental difference between lists and vectors.
+List can be called *recursive* vectors because a list can contain other lists - this is the fundamental difference between lists and vectors.
 
 ```{r}
 z <- list(list(list(list(1:5))))
@@ -234,6 +237,25 @@ df
 str(df)
 ```
 
+Data frame is an S3 class, its type reflects the underlying vector used to build it: the list. To test if something is a data frame use `class()` or test explicitly with `is.data.frame()`.
 
+```{r}
+typeof(df)
+class(df)
+is.data.frame(df)
+```
 
+It is possible to coerce an object with `as.data.frame()`. The following rules apply:
+  - A vector will create a one column data frame
+  - A list will create one column for each element; it's an error if they are not all the same length
+  - A matrix will create a data frame with the same number of columns and rows as the matrix.
+  
+It is possible to combine data frames with `cbind()` and `rbind()`
+  - When combining column wise (`cbind()`) the number of rows must match but row names are igniored.
+  - When combining row wise (`rbind()`) both the number and names of the cloumn must match
+  - Use `plyr::rbind.fill()` to combine data frames that done have the same columns
+  - If you try to create a data frame by `cbind()`ing vectors together a matrix is created - use `data.frame()` instead. -- the extension is to make sure that when using `cbind()` all the columns types are the same.
+  
+
+  
 
