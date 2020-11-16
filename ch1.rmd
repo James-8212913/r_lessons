@@ -161,6 +161,78 @@ structure(b) ## returns the structure for the object
 
 ```
 
+By default, most attributes are lost when modifying a vector. The only attributes lost are the three most important:
+1. Names
+2. Dimensions
+3. Class
+
+#### Names
+You can name a vector in three ways:
+- When creating it
+- By modifying an existing vector in place
+- By creating a modified copy of an existing vector
+
+Names should be unique to facilitate character sub-setting.
+
+You can unname a vector by `unname()` or remove all names in place `names() <- NULL`
+
+#### Factors
+
+A factor is a vector that can only have predefined values and is used to store categorical data. Factors a built on top of integer vector using two attributes
+- `class()` "factor" which makes them behave differently
+- `levels()` which defines the set of allowed values
+
+```{r}
+l <- factor(c("a", "b", "c", "a"))
+l
+class(l)
+levels(l)
+```
+
+Using a factor instead of a character vector makes it obvious when some groups contain no observations.
+
+Most data loading automatically turns characters to factors, this is suboptimal. To stop this behavior use `stringsAsFactors = FALSE` then manually convert the characters to factors with your knowledge of the data. Factor look like characters but they are actually integers. It's better to explicitly change characters to factors and factors to characters.
+
+### Matrices and Arrays
+
+Adding a `dim()` attribute to a vector allows it to perform like a multi-dimensional *array*. A special case of an array is a **Matrix**, it has two dimensions. Matrices are used for statistics, arrays are rarer.   
+
+
+```{r}
+e <- matrix(1:6,ncol = 3, nrow = 2) ## two scalar arguments to specify rows and columns
+e
+f <- array(1:12, c(2,3,2)) ## one argument to describe all dimensions
+f
+g <- 1:6
+dim(g) <- c(3,2) ## modify an object in place 
+g
+```
+
+`length()` generalises to `nrow()` and `ncol()` for matrices, and `dim()` for arrays. 
+
+`names()` generalises to `rownames()` and `colnames()` for matrices, and `dimnames()`, a list of character vectors for arrays. 
+
+`c()` generalises to `cbind()` and `rbind()` for matrices and `abind()` for arrays. 
+
+To test or a matrix using `is.matrix()` and an array using `is.array()` or by looking at the length of the `dim()`. `as.martix()` and `as.array()` make it easy to trun vectors into either a matirx or an array. 
+
+Vectors are the only one dimensional data structure. Atomic vectors are most commonly turned into matrices, the dimension attribute can be set on a list to make list-matrices and list-arrays. 
+
+### Data Frames
+
+A data frame is the most common way of storing data in R. Tidy data is the basis for making data analysis easier. A data frame is a list of equal length vectors, this makes it a two dimension data strcture. It shares the properties of both a matrix and the list. 
+
+A data frame has `names()`, `rownames()` and `colnames()`, names and colnames are the same thing. The length of a dataframe is the length of the underliying list so it is the same as `nccol()`; `nrow()` gives the number of rows. 
+
+#### Creation of Data Frames
+
+You can create a data frame with `data.frame()`, which takes named vectors a input.
+
+```{r}
+df <- data.frame(x = 1:3,y = c("a", "b", "c"))
+df
+str(df)
+```
 
 
 
