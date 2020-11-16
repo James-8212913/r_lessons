@@ -135,4 +135,11 @@ Both Data frames `as.data.frame()` and the outputs for a linear model objects `l
 
 All objects have a arbitrary additional attributes, used to store metadata about the object.
 
+Some common attributes are in the table below:
+
+- class     - the class of the object
+- comment   - a comment on the object, often a description of what it means
+- 
+
+
 
