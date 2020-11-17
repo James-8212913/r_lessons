@@ -1,3 +1,10 @@
+---
+title: R Basics
+author: J Murray
+output:
+  html_document: default
+  pdf_document: default
+---
 
 # Chapter 1
 
@@ -10,29 +17,34 @@
     - attributes `attributes()`
 
 2. What are the four common types of atomic vectors? What are the two rare types?
-  - logical, double, character, integer (same as double with no decimal point)
-   - complex, raw
+  - logical `is.logical()` and `as.logical()` [logical R Documentation](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/logical) 
+  - double `is.double()` and `as.double` [double R documentation](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/double) 
+  - character `is.character()` and `as.character()` [character R documentation](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/character) 
+  - integer `is.integer()` and `as.integer()` [integer R documentation](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/integer)
+  - complex, raw
 
 3. What are attributes and how to you get and set them?
+  - Attributes allow extra metadata to be associated with an object using `attr(x, "y"` and `attr(x, "y") <- value` or get and set all attributes at once with `attributes()`.
+  - [attributes R documentation](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/attributes)
 
 4. How is a list different from an atomic vector? How is a matrix different from a Data Frame?
+  - Elements of a list can be of any type, even a list whereas an atomic vector all the elements must be of the same type. 
+  - The elements of a matrix can be different types whereas a data frame must have the same types in each of the columns.
 
 5. Can you have a list that is a matrix? Can a Data Frame have a column that is a matrix?
+  - You can make a "list-array" by assuming a dimensionless list. It is possible to make a matrix a column of a data frame `data.frame(x = I(matrix()))`.
 
 
-
-### Q1 - what are the properties of a vector other than its contents?
+------
 
 The basic Data structure in R is a vector - they come in **Atomic Vectors** and **Lists**.
 
+`typeof()` ## what it is
 
-```{r}
-typeof() ## what it is
+`length()` ## How many elements it contains
 
-length() ## How many elements it contains
+`attributes()` ## additional arbitrary metadata
 
-attributes() ## additional arbitrary metadata
-```
 
 #### Atomic Vectors
 
@@ -46,7 +58,7 @@ attributes() ## additional arbitrary metadata
 ```{r}
 dbl_var <- c(1,1.5,2.5) 
 
-int_var <- c(1L, 2.5L, 5L) ## with the L suffic there is ain integer rather than a double
+int_var <- c(1L, 2.5L, 5L) ## with the L suffix there is an integer rather than a double
 
 log_var <- c(TRUE, FALSE, TRUE, T, F)
 
@@ -71,7 +83,6 @@ is.atomic(log_var)
 is.double(dbl_var)
 ```
 ```{r}
-is_numeric(dbl_var) ## from purrr doing the same as is.numeric but is deprecated
 is.numeric(dbl_var)
 ```
 ##### Coercion
@@ -107,6 +118,8 @@ y <- list(1:3, "a", c(TRUE, F, T, F,F,T,T), c(2,3,4,5,6))
 str(y)
 dim(y)
 ```
+
+Even though the `dim()` function doesn't work `nrow()` and `ncol` will give some details of a list.
 
 List can be called *recursive* vectors because a list can contain other lists - this is the fundamental difference between lists and vectors.
 
