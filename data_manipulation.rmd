@@ -1,0 +1,7 @@
+
+
+
+# Using dplyr
+
+The [dlpyr website]https://dplyr.tidyverse.org) has much more detail than is in this workbook. This is the start of manipulation skills. I will endeavour to incorporate some more advanced R comments from [Advanced R](https://learning.oreilly.com/library/view/advanced-r/9781466586963/K20319_C003.xhtml) as we progress through the basics.
+
