@@ -3,5 +3,135 @@
 
 # Using dplyr
 
+```{r}
+library(tidyverse)
+```
+
+
 The [dlpyr website]https://dplyr.tidyverse.org) has much more detail than is in this workbook. This is the start of manipulation skills. I will endeavour to incorporate some more advanced R comments from [Advanced R](https://learning.oreilly.com/library/view/advanced-r/9781466586963/K20319_C003.xhtml) as we progress through the basics.
+
+For the purposes of this work we will use a set of HR Data. The data hasn't not been cleaned at all so we wil go through the full process during this work cycle. 
+
+The data can be viewed below
+
+```{r}
+head(X2010_csv)
+
+view(X2010_csv)
+
+## Tidy the Columns Names by removing the spaces and standardising the output
+
+df <- X2010_csv %>%
+  rename_with( ~ tolower(gsub(" ", "_", .x)))
+
+df
+```
+
+An initial EDA reveals the following
+
+```{r}
+## Tidy the Data
+df1 <- df %>%
+  filter(!termination_reason == "Separation") %>% ## Remove the duplicate reasons for leaving
+  select(!c(name,servop,subunit,unit, service_nbr, previous_subunit, commanding_off._posn))%>%  ## De-identify the Data and remove unecessary columns
+  distinct(emplid, .keep_all = TRUE) ## Keep only the unique values within the DF 
+
+df1
+
+df2 <- df1[duplicated(df1$emplid),] ## This is a list of all the values in the DF that were not unique - 66 in total
+
+df2
+
+
+```
+
+While a quick summary of the data doesn't reveal much the date columns are interesting. We can see that all the termination dates are in the year of 2010 while the Action dates range from 2005 to 2015. There is also some interesting differences in the service dates and the hire dates. 
+
+```{r}
+  
+rand <- runif(6514) %>%
+  as_tibble()%>%
+  view()
+
+rand
+
+deidentify <- function(x) {
+  rand <- round(runif(x)*x,2)
+} ## Funciton to generate random numbers and multiply them by the original number - used to deidentify the emplyee id
+
+
+df1 <- df1%>%
+  mutate(
+    emplid = deidentify(emplid)
+  )
+
+df1
+
+```
+
+
+```{r}
+## Transform the ranks into Factors for further analysis
+
+distinct(df1, rank)
+
+rank_levels <- c(
+  "PTE TRN", "PTE", "PTE(P)", "LCPL", "CPL", "SGT", "SSGT", "WO2", "WO1", "LT", "CAPT", "MAJ", "LTCOL", "COL", "BRIG", "PTE REC", "OCDT", "MAJGEN", "2LT")
+
+distinct(df1, family)
+
+corp_family <- c(
+  "ASUT", "RAAC", "RAE", "RA SIGS", "RAINF", "RACT", "RAAMC", "RAAOC", "RAA", "AABC", "AUST INT", "AACC", "RAEME", "RACMP", "AAPRS", "AAAVN", "AAPSYCH", "RAANC", "RAADC", "AALC", "RAA CH D", "RAAEC", "SENOFF", "RA INF", "AA PSYCH", "Uknown", "NON CORPS", "LOCOBS")
+)
+
+distinct(df1, service)
+
+service_types <- c("CFTS", "HRR CFTS", "AFS", "ARA", "REG-GAP", "AAR", "RFSL", "RES-HRR", "ASR", "RES-LOE","RES-RRF")
+
+distinct(df1, termination_reason)
+
+termination_type <- c("Military - Completed CFTS", "Military-Medical Unfit Service", "Military - Resignation", "Military - Contract Completed", "Military - Training Failure", "Mil-Within 90days of enlistmnt", "Mil-Retentn Not In Srvc Intrst", "Military-Below Fitness Standrd", "Military-Irregular enlistment", "Mil-False statemnt on enlistmt", "Mil-Unsuit For Svc DPR 87-1-e", "Military - In Absence", "Military - Death", "Military-Compulsory Retire Age", "Military-Mgt Initiate Retiremt", "Military - Disciplinary", "Military - Civil Offence", "Military -Retired After Age 55")
+
+distinct(df1, previous_unit)
+
+factor(termination_type)
+
+## Transform categorical values levels into factors
+
+df1 <- df1 %>% mutate(
+  rank = factor(rank, levels = rank_levels),
+  corps = factor(family, levels = corp_family),
+  service = factor(service, levels = service_types),
+  termination_reason = factor(termination_reason, levels = termination_type),
+  previous_unit = as.factor(previous_unit)
+)
+
+str(df1)
+head(df1)
+glimpse(df1)
+levels(df1$rank)
+
+```
+
+```{r}
+
+df1 %>% ## pipe the data into a visualisation
+  mutate(
+    rank = rank %>% fct_infreq() %>% fct_rev() ## using pipes inside the mutate to order levels and reverse teh order
+  ) %>%
+  ggplot(aes(rank, fill = rank)) + 
+  geom_bar() +
+  coord_flip() +
+  ggtitle("Total Terminations by Rank - 2010") +
+  theme_minimal() +
+  scale_fill_viridis(discrete = TRUE)
+    
+    
+    palette = c("#440154FF", "#481668FF", "#482878FF", "#443A83FF", "#3E4A89FF", "#375A8CFF", "#31688EFF", "#2B758EFF", "#26828EFF", "#21908CFF", "#1F9E89FF", "#25AB82FF", "#35B779FF", "#4EC36BFF", "#6DCD59FF", "#8FD744FF", "#B4DE2CFF", "#DAE319FF", "#FDE725FF") discrete = TRUE)
+
+
+library(viridis)  
+viridis(19)
+```
+
 
