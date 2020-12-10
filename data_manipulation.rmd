@@ -116,22 +116,43 @@ levels(df1$rank)
 ```{r}
 
 df1 %>% ## pipe the data into a visualisation
-  mutate(
-    rank = rank %>% fct_infreq() %>% fct_rev() ## using pipes inside the mutate to order levels and reverse teh order
-  ) %>%
+  mutate(rank = rank %>% fct_infreq() %>% fct_rev())%>%   ## using pipes inside the mutate to order levels and reverse the order
   ggplot(aes(rank, fill = rank)) + 
   geom_bar() +
   coord_flip() +
-  ggtitle("Total Terminations by Rank - 2010") +
-  theme_minimal() +
-  scale_fill_viridis(discrete = TRUE)
-    
-    
-    palette = c("#440154FF", "#481668FF", "#482878FF", "#443A83FF", "#3E4A89FF", "#375A8CFF", "#31688EFF", "#2B758EFF", "#26828EFF", "#21908CFF", "#1F9E89FF", "#25AB82FF", "#35B779FF", "#4EC36BFF", "#6DCD59FF", "#8FD744FF", "#B4DE2CFF", "#DAE319FF", "#FDE725FF") discrete = TRUE)
+  labs(title = "Total Separations by Rank", x = "Rank", y = "Total") +
+  theme_minimal() 
 
-
-library(viridis)  
-viridis(19)
 ```
 
+```{r}
+## sorting percentages of total terminations by rank
+
+df1 %>% 
+  group_by(rank) %>%
+  summarise(percentage = n(), .groups = "drop") %>% 
+  mutate(pct = round(percentage/sum(percentage)*100,2)) %>% 
+  ggplot(aes(reorder(rank,pct, order = TRUE), pct, color = rank, )) +
+    geom_point() +
+    geom_text(aes(label = pct), nudge_y = 2) +
+    coord_flip() +
+    ggtitle("Total Separations by Rank - 2010") +
+    theme_minimal() +
+    labs(title = "Percentage of Total Separations by Rank", x = "Rank", y = "Percentage") +
+    guides(color = FALSE) 
+    
+  
+
+
+```
+
+
+```{r}
+
+## Plots trade and rank
+
+
+
+
+```
 
